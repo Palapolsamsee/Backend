@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Medication</title>
+</head>
+<body>
+    <h1>New Medication</h1>
+    <form action="/medications" method="POST">
+        <label for="name">Medication Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="dosage">Dosage:</label>
+        <input type="text" id="dosage" name="dosage" required>
+        <label for="schedule">Schedule:</label>
+        <input type="text" id="schedule" name="schedule" placeholder="Time and notes">
+        <label for="patientId">Patient:</label>
+        <select id="patientId" name="patientId">
+            <% patients.forEach(patient => { %>
+                <option value="<%= patient._id %>"><%= patient.name %></option>
+            <% }) %>
+        </select>
+        <button type="submit">Add Medication</button>
+    </form>
+    <a href="/patients">Back to Patients</a>
+</body>
+</html>
