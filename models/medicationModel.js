@@ -1,21 +1,29 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const medicationSchema = new mongoose.Schema({
+const medicationSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   dosage: {
     type: String,
-    required: true,
+    required: true
   },
   frequency: {
     type: String,
-    required: true,
+    required: true
   },
   description: {
-    type: String,
+    type: String
   },
+  type: {
+    type: String,
+    required: true,
+    enum: ['Scheduled', 'Pre-Meal', 'Post-Meal', 'Activity-Related', 'Emergency'] // Ensure this is in sync with your requirement
+  }
 });
 
-module.exports = mongoose.model('Medication', medicationSchema);
+const Medication = mongoose.model('Medication', medicationSchema);
+
+module.exports = Medication;

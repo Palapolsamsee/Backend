@@ -23,7 +23,6 @@ mongoose.connect(mongoURI, {
   console.error('Failed to connect to MongoDB', err);
 });
 
-
 // Create a new patient
 app.post('/patients', async (req, res) => {
     try {
@@ -35,8 +34,31 @@ app.post('/patients', async (req, res) => {
     }
   });
 
-  
-  // Create a new medication
+
+// Read all patients
+app.get('/patients', async (req, res) => {
+    try {
+        const patients = await Patient.find();
+        res.send(patients);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Read a specific patient by ID
+app.get('/patients/:id', async (req, res) => {
+    try {
+        const patient = await Patient.findById(req.params.id);
+        if (!patient) {
+            return res.status(404).send({ message: 'Patient not found' });
+        }
+        res.send(patient);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Create a new medication
 app.post('/medications', async (req, res) => {
     try {
       const medication = new Medication(req.body);
@@ -46,9 +68,16 @@ app.post('/medications', async (req, res) => {
       res.status(400).send(error);
     }
   });
-  
-
-  // Create a PatientMedication entry
+// Read all medications
+app.get('/medications', async (req, res) => {
+    try {
+        const medications = await Medication.find();
+        res.send(medications);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+// Create a PatientMedication entry
 app.post('/patient-medications', async (req, res) => {
     try {
       const { patientId, medicationId, doseTaken, takenAt, status } = req.body;
@@ -75,8 +104,21 @@ app.post('/patient-medications', async (req, res) => {
       res.status(400).send(error);
     }
   });
+
+// Read a specific medication by ID
+app.get('/medications/:id', async (req, res) => {
+    try {
+      const medication = await Medication.findById(req.params.id);
+      if (!medication) {
+        return res.status(404).send({ message: 'Medication not found' });
+      }
+      res.send(medication);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
   
-  // Read all PatientMedication entries
+// Read all PatientMedication entries
 app.get('/patient-medications', async (req, res) => {
     try {
       const patientMedications = await PatientMedication.find()
@@ -88,8 +130,8 @@ app.get('/patient-medications', async (req, res) => {
     }
   });
   
-  // Read a specific PatientMedication entry by ID
-  app.get('/patient-medications/:id', async (req, res) => {
+// Read a specific PatientMedication entry by ID
+app.get('/patient-medications/:id', async (req, res) => {
     try {
       const patientMedication = await PatientMedication.findById(req.params.id)
         .populate('patient')
@@ -103,7 +145,7 @@ app.get('/patient-medications', async (req, res) => {
     }
   });
   
-  // Update a PatientMedication entry by ID
+// Update a PatientMedication entry by ID
 app.patch('/patient-medications/:id', async (req, res) => {
     try {
       const patientMedication = await PatientMedication.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
@@ -118,8 +160,7 @@ app.patch('/patient-medications/:id', async (req, res) => {
     }
   });
   
-
-  // Delete a PatientMedication entry by ID
+// Delete a PatientMedication entry by ID
 app.delete('/patient-medications/:id', async (req, res) => {
     try {
       const patientMedication = await PatientMedication.findByIdAndDelete(req.params.id);
@@ -131,15 +172,6 @@ app.delete('/patient-medications/:id', async (req, res) => {
       res.status(500).send(error);
     }
   });
-  
-
-
-
-
-
-
-
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
