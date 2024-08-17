@@ -1,31 +1,21 @@
 const mongoose = require('mongoose');
 
-// Define Schema
 const medicationSchema = new mongoose.Schema({
-  patientName: {
+  name: {
     type: String,
-    required: true
-  },
-  medicationName: {
-    type: String,
-    required: true
+    required: true,
   },
   dosage: {
     type: String,
-    required: true
+    required: true,
   },
-  schedule: {
-    type: Date,
-    required: true
+  frequency: {
+    type: String,
+    required: true,
   },
-  notes: {
-    type: String
-  }
-}, {
-  timestamps: true // Automatically add createdAt and updatedAt fields
+  description: {
+    type: String,
+  },
 });
 
-// Create Model
-const Medication = mongoose.model('Medication', medicationSchema);
-
-module.exports = Medication;
+module.exports = mongoose.model('Medication', medicationSchema);

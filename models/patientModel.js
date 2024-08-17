@@ -1,37 +1,39 @@
 const mongoose = require('mongoose');
 
-// Define Schema for Patient
 const patientSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
-  age: {
-    type: Number,
-    required: true
+  dob: {
+    type: Date,
+    required: true,
   },
   gender: {
     type: String,
     enum: ['Male', 'Female', 'Other'],
-    required: true
-  },
-  contactInfo: {
-    phone: {
-      type: String,
-      required: true
-    },
-    email: {
-      type: String
-    }
+    required: true,
   },
   medicalHistory: {
-    type: String
-  }
-}, {
-  timestamps: true // Automatically add createdAt and updatedAt fields
+    type: String,
+  },
+  contactInfo: {
+    email: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+  address: {
+    type: String,
+  },
 });
 
-// Create Model for Patient
-const Patient = mongoose.model('Patient', patientSchema);
-
-module.exports = Patient;
+module.exports = mongoose.model('Patient', patientSchema);
